@@ -38,10 +38,10 @@ try:
 	print(searchInfo)
 	tweets = []
 	for tweet in searchTweets:
-		tweets.append(json.dumps(tweet._json))
+		tweets.append(json.dumps(tweet._json, sort_keys = True))
 	amlo["tweets"] = tweets;
 	print("TWEETS GOTTEN")
-	amlo["info"] = json.dumps(searchInfo._json)
+	amlo["info"] = json.dumps(searchInfo._json, sort_keys = True)
 	print("INFO GOTTEN")
 
 except tweepy.RateLimitError as e:
