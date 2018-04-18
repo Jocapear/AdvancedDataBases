@@ -31,11 +31,11 @@ try:
 	#for friend in tweepy.Cursor(api.friends).items():
 	#	friends.append(json.dumps(friend._json))
 
+	#regresa los primeros 20 tweets
 	searchTweets = api.user_timeline(subjectsids[0])
-	print(searchTweets)
+	#regresa Info
 	searchInfo = api.get_user(subjectsids[0])
-	print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
-	print(searchInfo)
+
 	tweets = []
 	for tweet in searchTweets:
 		tweets.append(json.dumps(tweet._json))
@@ -55,3 +55,4 @@ writeJSON(amlo, subjects[0])
 print("----------------------- AMLO WRITTEN -----------------------------")
 
 print("DONE")
+
