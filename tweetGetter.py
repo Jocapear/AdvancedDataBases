@@ -76,8 +76,21 @@ def getReplies(subject, tweetID):
 	print("REPLIES GOTTEN")
 	return tweets
 
+
+def getMentions(subject):
+	tweets = []
+	query = subject
+	search = api.search(query, count=1000)
+	for tweet in search:	
+		tweets.append(json.dumps(tweet._json, sort_keys = True))
+
+	writeJSON(tweets, "mentions_to_"+subject)
+	print("MENTIONS GOTTEN")
+	return tweets
+
+
 #ID's de Meade, AMLO, Anaya y Margarita
-subjects = [237372254, 82119937, 151968088, 97017966]
+#subjects = [237372254, 82119937, 151968088, 97017966]
 
 #for candidato in subjects:
 #	accountGetter(candidato)

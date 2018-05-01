@@ -1,10 +1,9 @@
 import json
 from datetime import date
 import time
-subject = "RicardoAnayaC"
-json_data = json.load(open(subject + ".json")) #"tweets.json" es la direccion donde se ubican los tweets minados
 
-def tweetsPerDay():
+
+def tweetsPerDay(json_data):
     #mapear el mes con su numero
     numMonth = {"Jan": 1,
             "Feb": 2,
@@ -52,7 +51,7 @@ def tweetsPerDay():
     #si tiene mas de 100 regresa true
     return tweetsPerDay > 1
 
-def usingHashtag() :
+def usingHashtag(json_data) :
     list = {}
     for x in range (0, 20):
         texto = json.loads(json_data["tweets"][x])["text"]
@@ -68,16 +67,22 @@ def usingHashtag() :
         return(value > 1)
     
 
-print(tweetsPerDay())
-print(usingHashtag())
 
-porcentaje = 0
+def isBot(subject):
+    json_data = json.load(open(subject + ".json")) #"tweets.json" es la direccion donde se ubican los tweets minados
 
-if(tweetsPerDay()):
-    porcentaje += 65
-if(usingHashtag()):
-    porcentaje += 35
+    porcentaje = 0
 
-print("probabilidad de ser bot: " , porcentaje , "%")
+    if(tweetsPerDay(json_data)):
+        porcentaje += 65
+    if(usingHashtag(json_data)):
+        porcentaje += 35
+
+    print("probabilidad de ser bot: " , porcentaje , "%")
+    return porcentaje
+
+
+subject = "RicardoAnayaC"
+isBot(subject)
 
 
