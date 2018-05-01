@@ -18,41 +18,43 @@ auth.set_access_token(access_token, access_secret)
  
 api = tweepy.API(auth, wait_on_rate_limit=True)
 
-#query_all = ["@lopezobrador_", "AMLO"]
-#query = quote_plus("({0}) ({1})".format(" OR ".join(query_all)))
-subjects = ["@lopezobrador_"]
-subjectsids = [82119937]
+def accountGetter(accountID): #Recibe el ID de una cuenta de twitter
+	subject = "" #For storing the subject name -> later used on JSON file's name.
 
-amlo = {}
-#friends = []
+	account = {} #Target account dictionary with alst 20 tweets and account information.
 
-try:
-	print("RUNNING...")
-	#for friend in tweepy.Cursor(api.friends).items():
-	#	friends.append(json.dumps(friend._json))
+	try:
+		print("RUNNING ACCOUNT_GETTER...")
+		#regresa los primeros 20 tweets
+		searchTweets = api.user_timeline(accountID)
+		#regresa Info
+		searchInfo = api.get_user(accountID)
 
-	#regresa los primeros 20 tweets
-	searchTweets = api.user_timeline(subjectsids[0])
-	#regresa Info
-	searchInfo = api.get_user(subjectsids[0])
+		tweets = []
+		for tweet in searchTweets:
+			tweets.append(json.dumps(tweet._json, sort_keys = True))
 
-	tweets = []
-	for tweet in searchTweets:
-		tweets.append(json.dumps(tweet._json, sort_keys = True))
-	amlo["tweets"] = tweets;
-	print("TWEETS GOTTEN")
-	amlo["info"] = json.dumps(searchInfo._json, sort_keys = True)
-	print("INFO GOTTEN")
+		account["tweets"] = tweets;
+		print("TWEETS GOTTEN")
 
-except tweepy.RateLimitError as e:
-	print("***************** Error RateLimitError **********************")
-except tweepy.TweepError as e:
-    print(e)
+		account["info"] = json.dumps(searchInfo._json, sort_keys = True)
+		print("INFO GOTTEN")
 
-#writeJSON(friends, "friends")
-#print("----------------------- FRIENDS WRITTEN -----------------------------")
-writeJSON(amlo, subjects[0])
-print("----------------------- AMLO WRITTEN -----------------------------")
+		subject = searchInfo._json["screen_name"] 
+		print("Name gotten: " + subject)
 
-print("DONE")
+	except tweepy.RateLimitError as e:
+		print("****************** Error RateLimitError **********************")
+	except tweepy.TweepError as e:
+	    print(e)
 
+	writeJSON(account, subject)
+	print("ACCOUNT WRITTEN")
+
+	print("DONE")
+	return account
+#ID's de Meade, AMLO, Anaya y Margarita
+subjects = [237372254, 82119937, 151968088, 97017966]
+
+for candidato in subjects:
+	accountGetter(candidato)
