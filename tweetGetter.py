@@ -53,8 +53,40 @@ def accountGetter(accountID): #Recibe el ID de una cuenta de twitter
 
 	print("DONE")
 	return account
+
+def tweetGetter(tweetIDs):
+	tweets = []
+	query = api.statuses_lookup(tweetIDs)
+	for tweet in query:
+		tweets.append(json.dumps(tweet._json, sort_keys = True))
+
+	writeJSON(tweets, "tweets_lists")
+	print("TWEETS GOTTEN")
+	return tweets
+
+def getReplies(subject, tweetID):
+	tweets = []
+	query = subject
+	search = api.search(query, count=1000)
+	for tweet in search:
+		if tweet.in_reply_to_status_id == tweetID:
+			tweets.append(json.dumps(tweet._json, sort_keys = True))
+
+	writeJSON(tweets, "replies_to_"+subject+"_"+str(tweetID))
+	print("REPLIES GOTTEN")
+	return tweets
+
 #ID's de Meade, AMLO, Anaya y Margarita
 subjects = [237372254, 82119937, 151968088, 97017966]
 
-for candidato in subjects:
-	accountGetter(candidato)
+#for candidato in subjects:
+#	accountGetter(candidato)
+
+#Target https://twitter.com/yare_quinones/status/991392931389964288
+#tweetsIDS = []
+#tweetsIDS.append(991392931389964288)
+#tweetGetter(tweetsIDS)
+
+#Target 991392862490316801 AMLO
+#getReplies("@lopezobrador_", 991392862490316801)
+#Obtuvo el 991419266183368704 y el 991419120406138880
