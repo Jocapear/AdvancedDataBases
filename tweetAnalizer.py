@@ -51,7 +51,7 @@ def tweetsPerDay(json_data):
     tweetsPerDay =(tweets/days)
 
     #si tiene mas de 100 regresa true
-    return tweetsPerDay > 1
+    return tweetsPerDay > 100
 
 def usingHashtag(json_data) :
     list = {}
@@ -67,6 +67,21 @@ def usingHashtag(json_data) :
                     list[y] = list[y] + 1
 
     for key,value in sorted(list.items()):
+        return(value > 10)
+
+
+
+def sameTweet(json_data) :
+    list = {}
+
+    for x in range (len(json_data["tweets"])):
+        texto = json.loads(json_data["tweets"][x])["text"]
+        if(x not in list):
+                list[x] = 1
+            else:
+                list[x] = list[x] + 1
+
+    for key,value in sorted(list.items()):
         return(value > 1)
     
 
@@ -77,9 +92,11 @@ def isBot(subject_data):
     porcentaje = 0
 
     if(tweetsPerDay(json_data)):
-        porcentaje += 65
+        porcentaje += 60
     if(usingHashtag(json_data)):
-        porcentaje += 35
+        porcentaje += 10
+    if(sameTweet(json_data)):
+        porcentaje += 30
 
     print("probabilidad de ser bot: " , porcentaje , "%")
     return porcentaje
