@@ -12,7 +12,7 @@ def tweetsPerDay(json_data):
             "May" : 5,
             "Jun" : 6,
             "Jul" : 7,
-            "Ago" : 8,
+            "Aug" : 8,
             "Sep" : 9,
             "Oct" : 10,
             "Nov" : 11,
@@ -39,7 +39,9 @@ def tweetsPerDay(json_data):
 
     #obtener el numero de dia a partir de que se creo la cuenta
     numDays = str(currentDate - creationDate)
+    print(numDays)
     strDays = numDays.split()
+    print(strDays)
     days = int(strDays[0])
 
     #obtener el numero de tweets desde que se creo la cuenta
@@ -53,7 +55,8 @@ def tweetsPerDay(json_data):
 
 def usingHashtag(json_data) :
     list = {}
-    for x in range (0, 20):
+
+    for x in range (len(json_data["tweets"])):
         texto = json.loads(json_data["tweets"][x])["text"]
         texto = texto.split()
         for y in texto:
@@ -68,8 +71,8 @@ def usingHashtag(json_data) :
     
 
 
-def isBot(subject):
-    json_data = json.load(open(subject + ".json")) #"tweets.json" es la direccion donde se ubican los tweets minados
+def isBot(subject_data):
+    json_data = subject_data #"tweets.json" es la direccion donde se ubican los tweets minados
 
     porcentaje = 0
 
@@ -82,7 +85,7 @@ def isBot(subject):
     return porcentaje
 
 
-subject = "RicardoAnayaC"
-isBot(subject)
+#subject = "RicardoAnayaC"
+#isBot(subject)
 
 

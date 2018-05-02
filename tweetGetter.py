@@ -54,6 +54,33 @@ def accountGetter(accountID): #Recibe el ID de una cuenta de twitter
 	print("DONE")
 	return account
 
+def accountGetterNoWritting(accountID): #Recibe el ID de una cuenta de twitter
+
+	account = {} #Target account dictionary with alst 20 tweets and account information.
+
+	try:
+		print("RUNNING ACCOUNT_GETTER...")
+		#regresa los primeros 20 tweets
+		searchTweets = api.user_timeline(accountID)
+		#regresa Info
+		searchInfo = api.get_user(accountID)
+
+		tweets = []
+		for tweet in searchTweets:
+			tweets.append(json.dumps(tweet._json, sort_keys = True))
+
+		account["tweets"] = tweets;
+		print("TWEETS GOTTEN")
+
+		account["info"] = json.dumps(searchInfo._json, sort_keys = True)
+		print("INFO GOTTEN")
+
+	except tweepy.RateLimitError as e:
+		print("****************** Error RateLimitError **********************")
+	except tweepy.TweepError as e:
+	    print(e)
+	return account
+
 def tweetGetter(tweetIDs):
 	tweets = []
 	query = api.statuses_lookup(tweetIDs)
@@ -80,11 +107,11 @@ def getReplies(subject, tweetID):
 def getMentions(subject):
 	tweets = []
 	query = subject
-	search = api.search(query, count=1000)
+	search = api.search(query, rpp= 100, count=1000)
 	for tweet in search:	
 		tweets.append(json.dumps(tweet._json, sort_keys = True))
 
-	writeJSON(tweets, "mentions_to_"+subject)
+	writeJSON(tweets, "mentions_to_"+ str(subject))
 	print("MENTIONS GOTTEN")
 	return tweets
 
